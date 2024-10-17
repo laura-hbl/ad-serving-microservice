@@ -18,6 +18,7 @@ class AdServerApplicationTests {
 	void integrationTestRedis() {
 		// Created test to manually check object creation in redis server
 		AdDto adDto = new AdDto("Ad1", "description", "http://ads");
-		adService.createAd(adDto);
+		AdDto createdAd = adService.createAd(adDto);
+		System.out.println(createdAd.getId());
 	}
 }

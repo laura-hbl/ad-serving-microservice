@@ -28,12 +28,6 @@ class AdServiceImplTest {
     @Mock
     private AdRepository adRepository;
 
-/*    @BeforeEach
-    void setUp() {
-        // for this mock return object passed as parameter
-        when(adRepository.save(any())).thenAnswer(arg -> arg.getArguments()[0]);
-    }*/
-
     @Test
     public void givenAnAdDto_whenCreateAd_thenReturnAdDtoWithId() {
         AdDto adDto = new AdDto("Ad1", "my ad description", "http://ads.com");
@@ -43,16 +37,16 @@ class AdServiceImplTest {
         AdDto result = adService.createAd(adDto);
 
         verify(adRepository).save(argumentCaptor.capture());
-        assertEquals(result.getId(), result.getId());
-        assertEquals(result.getTitle(), result.getTitle());
-        assertEquals(result.getDescription(), result.getDescription());
-        assertEquals(result.getUrl(), result.getUrl());
+        assertEquals(result.getId(), argumentCaptor.getValue().getId());
+        assertEquals(result.getTitle(), adDto.getTitle());
+        assertEquals(result.getDescription(), adDto.getDescription());
+        assertEquals(result.getUrl(), adDto.getUrl());
     }
 
     @Test
     public void givenAnAdId_whenGetAd_thenReturnExpectedAd() {
         Ad ad = new Ad("UUID", "Ad", "my ad description", "http://ads.com");
-        when(adRepository.findById("UUID")).thenReturn(Optional.ofNullable(ad));
+        when(adRepository.findById("UUID")).thenReturn(Optional.of(ad));
 
         AdDto result = adService.getAd("UUID");
 
@@ -76,7 +70,7 @@ class AdServiceImplTest {
     @Test
     public void givenAnAdId_whenServeAd_thenReturnExpectedUrl() {
         Ad ad = new Ad("UUID", "Ad", "my ad description", "http://ads.com");
-        when(adRepository.findById("UUID")).thenReturn(Optional.ofNullable(ad));
+        when(adRepository.findById("UUID")).thenReturn(Optional.of(ad));
 
         String result = adService.serveAd("UUID");
 

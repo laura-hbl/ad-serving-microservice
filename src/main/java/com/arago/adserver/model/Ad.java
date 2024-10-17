@@ -17,6 +17,13 @@ public class Ad {
     public Ad() {
     }
 
+    public Ad(String id, String title, String description, String url) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.url = url;
+    }
+
     public String getId() {
         return id;
     }

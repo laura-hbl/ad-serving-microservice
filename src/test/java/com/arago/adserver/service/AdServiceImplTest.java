@@ -1,9 +1,9 @@
 package com.arago.adserver.service;
 
 import com.arago.adserver.dto.AdDto;
+import com.arago.adserver.exception.ResourceNotFoundException;
 import com.arago.adserver.model.Ad;
 import com.arago.adserver.repository.AdRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -11,8 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,23 +28,48 @@ class AdServiceImplTest {
     @Mock
     private AdRepository adRepository;
 
-    @BeforeEach
+/*    @BeforeEach
     void setUp() {
         // for this mock return object passed as parameter
         when(adRepository.save(any())).thenAnswer(arg -> arg.getArguments()[0]);
-    }
+    }*/
 
     @Test
     public void givenAnAdDto_whenCreateAd_thenReturnAdDtoWithId() {
-        AdDto adDto = new AdDto("Ad1", "description", "http://ads");
+        AdDto adDto = new AdDto("Ad1", "my ad description", "http://ads.com");
+        when(adRepository.save(any())).thenAnswer(arg -> arg.getArguments()[0]);
         ArgumentCaptor<Ad> argumentCaptor = ArgumentCaptor.forClass(Ad.class);
 
-        AdDto adCreated = adService.createAd(adDto);
+        AdDto result = adService.createAd(adDto);
 
         verify(adRepository).save(argumentCaptor.capture());
-        assertThat(adCreated.getTitle()).isEqualTo(adDto.getTitle());
-        assertThat(adCreated.getDescription()).isEqualTo(adDto.getDescription());
-        assertThat(adCreated.getUrl()).isEqualTo(adDto.getUrl());
-        assertThat(adCreated.getId()).isEqualTo(argumentCaptor.getValue().getId());
+        assertEquals(result.getId(), result.getId());
+        assertEquals(result.getTitle(), result.getTitle());
+        assertEquals(result.getDescription(), result.getDescription());
+        assertEquals(result.getUrl(), result.getUrl());
+    }
+
+    @Test
+    public void givenAnAdId_whenGetAd_thenReturnExpectedAd() {
+        Ad ad = new Ad("UUID", "Ad", "my ad description", "http://ads.com");
+        when(adRepository.findById("UUID")).thenReturn(Optional.ofNullable(ad));
+
+        AdDto result = adService.getAd("UUID");
+
+        verify(adRepository).findById("UUID");
+        assertNotNull(result);
+        assertEquals(ad.getId(), result.getId());
+        assertEquals(ad.getTitle(), result.getTitle());
+        assertEquals(ad.getDescription(), result.getDescription());
+        assertEquals(ad.getUrl(), result.getUrl());
+    }
+
+    @Test()
+    public void givenAnUnregisteredId_whenGetAd_thenReturnEmpty() {
+        when(adRepository.findById(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> adService.getAd(anyString()),
+                "No ad registered with this id"
+        );
     }
 }

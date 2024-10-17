@@ -27,6 +27,9 @@ class AdServiceImplTest {
     @Mock
     private AdRepository adRepository;
 
+    @Mock
+    private TrackAdImpressionService trackAdImpressionService;
+
     @Test
     public void givenAnAdDto_whenCreateAd_thenReturnAdDtoWithId() {
         AdDto adDto = new AdDto("Ad1", "my ad description", "http://ads.com");

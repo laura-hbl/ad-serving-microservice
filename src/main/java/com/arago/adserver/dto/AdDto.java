@@ -2,7 +2,6 @@ package com.arago.adserver.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.URL;
 
 import java.util.Objects;
 
@@ -18,7 +17,6 @@ public class AdDto {
 
     @NotBlank(message = "URL cannot be blank")
     @NotNull(message = "URL is required")
-    @URL(message = "URL must be a valid address")
     private String url;
 
     public AdDto() {

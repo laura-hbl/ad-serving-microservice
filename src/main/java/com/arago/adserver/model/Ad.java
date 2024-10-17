@@ -6,7 +6,8 @@ import org.springframework.data.redis.core.RedisHash;
 import java.util.Objects;
 import java.util.UUID;
 
-@RedisHash("ad")
+//set timeToLive to 60 sec for test
+@RedisHash(value = "ad", timeToLive = 60)
 public class Ad {
 
     @Id

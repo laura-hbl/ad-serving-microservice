@@ -6,6 +6,7 @@ import com.arago.adserver.model.Ad;
 import com.arago.adserver.repository.AdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.UUID;
 
@@ -41,9 +42,22 @@ public class AdServiceImpl implements AdService {
     public String serveAd(final String id) {
 
         AdDto ad = getAd(id);
-
-        //TODO : send request to impressionTracker microservice
+        trackAdImpression(id);
 
         return ad.getUrl();
+    }
+
+    private void trackAdImpression(final String id) {
+
+        WebClient webClient = WebClient.create();
+
+        // POST request to the tracker impression microservice to increment ad impression count by ad id.
+        webClient.post()
+                .uri("http://localhost:8081/ad-impressions/{adId}", id)
+                .retrieve()
+                .toBodilessEntity()
+                .doOnSuccess(response -> System.out.println("Impression tracked successfully for id: " + id))
+                .doOnError(error -> System.err.println("Failed to track impression for id: " + id))
+                .subscribe();
     }
 }

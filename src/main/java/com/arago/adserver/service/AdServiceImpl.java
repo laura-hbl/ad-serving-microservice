@@ -19,9 +19,9 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdDto createAd(final AdDto addDto) {
+    public AdDto createAd(final AdDto adDto) {
 
-        Ad ad = new Ad(addDto.getTitle(), addDto.getDescription(), addDto.getUrl());
+        Ad ad = new Ad(adDto.getTitle(), adDto.getDescription(), adDto.getUrl());
         Ad adSaved = adRepository.save(ad);
 
         return new AdDto(adSaved.getId(), adSaved.getTitle(), adSaved.getDescription(), adSaved.getUrl());

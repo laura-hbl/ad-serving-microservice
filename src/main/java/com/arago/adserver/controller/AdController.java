@@ -32,4 +32,11 @@ public class AdController {
         return new ResponseEntity<>(ad, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/serve")
+    public ResponseEntity<String> serveAd(@PathVariable("id") final String adId) {
+
+        String adUrl = adService.serveAd(adId);
+        return new ResponseEntity<>(adUrl, HttpStatus.OK);
+    }
+
 }

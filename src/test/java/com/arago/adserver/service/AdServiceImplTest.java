@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -76,5 +75,20 @@ class AdServiceImplTest {
 
         verify(adRepository).findById("UUID");
         assertEquals(ad.getUrl(), result);
+    }
+
+    @Test
+    public void givenAnAd_whenMissingInformation_thenThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> adService.createAd(new AdDto(null, null, null)),
+                "Title cannot be null or empty"
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> adService.createAd(new AdDto(" ", null, null)),
+                "Title cannot be null or empty"
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> adService.createAd(new AdDto("Title", null, null)),
+                "URL cannot be null or empty"
+        );
     }
 }

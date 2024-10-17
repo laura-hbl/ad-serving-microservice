@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @RedisHash("ad")
 public class Ad {
@@ -14,14 +15,15 @@ public class Ad {
     private String description;
     private String url;
 
-    public Ad() {
+    public Ad(String title, String description, String url) {
+        this(UUID.randomUUID().toString(), title, description, url);
     }
 
     public Ad(String id, String title, String description, String url) {
-        this.id = id;
-        this.title = title;
+        this.id = require(id, "ID cannot be null or empty");
+        this.title = require(title, "Title cannot be null or empty");
         this.description = description;
-        this.url = url;
+        this.url = require(url, "URL cannot be null or empty");
     }
 
     public String getId() {
@@ -54,6 +56,13 @@ public class Ad {
 
     public void setUrl(final String url) {
         this.url = url;
+    }
+
+    private static String require(String value, String message){
+        if(value == null || value.isBlank()){
+            throw new IllegalArgumentException(message);
+        }
+        return value;
     }
 
     @Override

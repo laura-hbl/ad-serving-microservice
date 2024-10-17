@@ -2,6 +2,7 @@ package com.arago.adserver.controller;
 
 import com.arago.adserver.dto.AdDto;
 import com.arago.adserver.service.AdService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class AdController {
     }
 
     @PostMapping
-    public ResponseEntity<AdDto> createAd(@RequestBody final AdDto adDto) {
+    public ResponseEntity<AdDto> createAd(@Valid @RequestBody final AdDto adDto) {
         AdDto createdAd = adService.createAd(adDto);
 
         return new ResponseEntity<>(createdAd, HttpStatus.CREATED);

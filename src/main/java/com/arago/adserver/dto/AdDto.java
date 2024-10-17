@@ -1,13 +1,28 @@
 package com.arago.adserver.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.URL;
+
 import java.util.Objects;
 
 public class AdDto {
 
     private String id;
+
+    @NotBlank(message = "Title cannot be blank")
+    @NotNull(message = "Title is required")
     private String title;
+
     private String description;
+
+    @NotBlank(message = "URL cannot be blank")
+    @NotNull(message = "URL is required")
+    @URL(message = "URL must be a valid address")
     private String url;
+
+    public AdDto() {
+    }
 
     public AdDto(String id, String title, String description, String url) {
         this.id = id;
@@ -20,9 +35,6 @@ public class AdDto {
         this.title = title;
         this.description = description;
         this.url = url;
-    }
-
-    public AdDto() {
     }
 
     public String getId() {

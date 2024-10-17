@@ -72,4 +72,15 @@ class AdServiceImplTest {
                 "No ad registered with this id"
         );
     }
+
+    @Test
+    public void givenAnAdId_whenServeAd_thenReturnExpectedUrl() {
+        Ad ad = new Ad("UUID", "Ad", "my ad description", "http://ads.com");
+        when(adRepository.findById("UUID")).thenReturn(Optional.ofNullable(ad));
+
+        String result = adService.serveAd("UUID");
+
+        verify(adRepository).findById("UUID");
+        assertEquals(ad.getUrl(), result);
+    }
 }

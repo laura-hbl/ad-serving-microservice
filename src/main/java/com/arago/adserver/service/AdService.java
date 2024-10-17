@@ -7,4 +7,6 @@ public interface AdService {
     AdDto createAd(final AdDto addDTO);
 
     AdDto getAd(final String id);
+
+    String serveAd(final String id);
 }

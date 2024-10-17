@@ -32,8 +32,18 @@ public class AdServiceImpl implements AdService {
     public AdDto getAd(final String id) {
 
         Ad ad = adRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("No ad registered with this id"));
+                new ResourceNotFoundException("No ad registered with this id: " + id));
 
         return new AdDto(ad.getId(), ad.getTitle(), ad.getDescription(), ad.getUrl());
+    }
+
+    @Override
+    public String serveAd(final String id) {
+
+        AdDto ad = getAd(id);
+
+        //TODO : send request to impressionTracker microservice
+
+        return ad.getUrl();
     }
 }

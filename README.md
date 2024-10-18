@@ -49,7 +49,7 @@ To run the microservices on your local machine, follow these steps for each repo
 1. **Clone the Ad-Serving Repository**:
    ```bash
    git clone https://github.com/laura-hbl/ad-serving-microservice.git
-   cd ad-serving-repo
+   cd ad-serving-microservice
    ```
 2. **Start the Redis Server**: Ensure that the Redis server is up and running.
 3. **Build the project**: Navigate to the Ad-Serving project's root directory and run:
@@ -67,7 +67,7 @@ To run the microservices on your local machine, follow these steps for each repo
 1. **Clone the Impression-Tracking Repository**:
    ```bash
    git clone https://github.com/laura-hbl/impression-tracking-microservice.git
-   cd impression-tracking-repo
+   cd impression-tracking-microservice
    ```
 2. **Start the Redis Server**: Ensure that the Redis server is up and running.
 3. **Build the project**: Navigate to the Impression-Tracking project's root directory and run:

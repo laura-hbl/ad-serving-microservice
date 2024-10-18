@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 
+/**
+ * REST controller for managing ads.
+ */
 @RestController
 @RequestMapping("/ads")
 public class AdController {
@@ -32,6 +35,14 @@ public class AdController {
                 .build();
     }
 
+    /**
+     * Creates a new ad.
+     *
+     * @param adDto the ad data transfer object containing ad info
+     * @return ResponseEntity containing the created ad and HTTP status 201 (Created)
+     * if the request is within the rate limit; or HTTP status 429 (Too Many Requests)
+     * if the rate limit is exceeded.
+     */
     @PostMapping
     public ResponseEntity<?> createAd(@Valid @RequestBody final AdDto adDto) {
         if (bucket.tryConsume(1)) {
@@ -43,6 +54,12 @@ public class AdController {
         }
     }
 
+    /**
+     * Retrieves an ad by its id.
+     *
+     * @param adId the id of the ad to retrieve.
+     * @return ResponseEntity containing the retrieved ad and HTTP status.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<AdDto> getAd(@PathVariable("id") final String adId) {
 
@@ -50,6 +67,12 @@ public class AdController {
         return new ResponseEntity<>(ad, HttpStatus.OK);
     }
 
+    /**
+     * Serves an ad by its id.
+     *
+     * @param adId the id of the ad to serve
+     * @return ResponseEntity containing the ad URL and HTTP status.
+     */
     @GetMapping("/{id}/serve")
     public ResponseEntity<String> serveAd(@PathVariable("id") final String adId) {
 

@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Data Transfer Object for the Ad entity.
+ */
 public class AdDto {
 
     private String id;

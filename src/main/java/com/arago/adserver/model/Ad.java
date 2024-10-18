@@ -6,7 +6,10 @@ import org.springframework.data.redis.core.RedisHash;
 import java.util.Objects;
 import java.util.UUID;
 
-//timeToLive is set to 5 minutes for testing purposes.
+/**
+ * Ad entity.
+ * The time-to-live is set to 5 minutes for testing purposes.
+ */
 @RedisHash(value = "ad", timeToLive = 300)
 public class Ad {
 
@@ -62,7 +65,15 @@ public class Ad {
         this.url = url;
     }
 
-    private static String require(String value, String message){
+    /**
+     * Validates that the required value is not null or blank.
+     *
+     * @param value the value to validate
+     * @param message the error message to use if validation fails
+     * @return the validated value
+     * @throws IllegalArgumentException if the value is null or blank
+     */
+    private static String require(String value, String message) {
         if(value == null || value.isBlank()){
             throw new IllegalArgumentException(message);
         }

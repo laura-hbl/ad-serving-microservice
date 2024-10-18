@@ -41,8 +41,14 @@ public class AdServiceImpl implements AdService {
     @Override
     public String serveAd(final String id) {
 
-        AdDto ad = getAd(id);
-        trackAdImpressionService.trackAdImpression(id);
+        AdDto ad;
+
+        try {
+            ad = getAd(id);
+            trackAdImpressionService.trackAdImpression(id);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
 
         return ad.getUrl();
     }

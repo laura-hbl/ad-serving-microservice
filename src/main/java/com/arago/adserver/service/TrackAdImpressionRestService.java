@@ -3,7 +3,7 @@ package com.arago.adserver.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@Service
+@Service("track-impression-rest-service")
 public class TrackAdImpressionRestService implements TrackAdImpressionService {
 
     @Override

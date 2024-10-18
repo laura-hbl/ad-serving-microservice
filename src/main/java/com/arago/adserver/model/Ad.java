@@ -16,6 +16,9 @@ public class Ad {
     private String description;
     private String url;
 
+    public Ad() {
+    }
+
     public Ad(String title, String description, String url) {
         this(UUID.randomUUID().toString(), title, description, url);
     }

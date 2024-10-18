@@ -5,6 +5,7 @@ import com.arago.adserver.exception.ResourceNotFoundException;
 import com.arago.adserver.model.Ad;
 import com.arago.adserver.repository.AdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,7 @@ public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
 
     @Autowired
-    public AdServiceImpl(TrackAdImpressionService trackAdImpressionService, AdRepository adRepository) {
+    public AdServiceImpl(@Qualifier("track-impression-grpc-service") TrackAdImpressionService trackAdImpressionService, AdRepository adRepository) {
         this.trackAdImpressionService = trackAdImpressionService;
         this.adRepository = adRepository;
     }

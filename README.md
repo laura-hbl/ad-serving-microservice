@@ -28,7 +28,7 @@ Both microservices use Redis for data storage and retrieval.
 
 ## Communication - gRPC
 
-The microservices communicate using **gRPC** .The protocol buffers (`.proto` files) are defined in  .
+The microservices communicate using **gRPC** .The protocol buffers (`.proto` files) are defined in are defined in  src/main/proto.
 
 ## Technical Specifications
 
@@ -116,8 +116,8 @@ To run the microservices on your local machine, follow these steps for each repo
 
 1. **Increment the ad impression count**
 
-   - **gRPC Method**: `IncrementImpression`
-   - **Service**: `ImpressionTrackerService`
+   - **gRPC Method**: `TrackAdImpression`
+   - **Service**: `TrackingService`
    - **Parameter**: `adId` (required)
    - **Description**: Increases the impression count for the specified ad using gRPC communication.
 

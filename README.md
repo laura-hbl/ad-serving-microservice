@@ -24,9 +24,9 @@ Before running the project, ensure you have the following installed:
 
 Both microservices use Redis for data storage and retrieval.
 
-## Communication - gRPC
+## Communication - gRPC & REST
 
-The microservices communicate using gRPC for internal service-to-service communication, while external requests are managed through REST.
+The microservices communicate using **gRPC** for internal service-to-service communication, while external requests are managed through **REST**.
 The protocol buffers (defined in .proto files) are located in the src/main/proto directory.
 
 ## Technical Specifications
@@ -64,7 +64,7 @@ To run the microservices on your local machine, follow these steps for each repo
    ```bash
    mvn spring-boot:run
    ```
-5. The ad-serving microservice will run on `http://localhost:8080`.
+5. The ad-serving microservice will run on `http://localhost:8080` and the redis server listen on port 9090.
 
 ### Impression-Tracking Microservice
 
@@ -87,7 +87,7 @@ To run the microservices on your local machine, follow these steps for each repo
    ```bash
    mvn spring-boot:run
    ```
-5. The impression-tracking microservice will run on `http://localhost:8081`.
+5. The impression-tracking microservice will run on `http://localhost:8081` and gRPC calls will be received on port 9090.
 
 ## API Endpoints
 
@@ -96,7 +96,8 @@ To run the microservices on your local machine, follow these steps for each repo
 1. **Create a new ad**
 
    - **Method**: `POST`
-   - **Endpoint**: `http://localhost:8080/api/ads`
+   - **Endpoint**: `http://localhost:8080/ads`
+   - **Description**: Adds a new ad with the specified title, optional description, and URL.
    - **Request Body**:
      ```json
      {
@@ -105,21 +106,45 @@ To run the microservices on your local machine, follow these steps for each repo
        "url": "http://example.com"
      }
      ```
-   - **Description**: Adds a new ad with the specified title, optional description, and URL.
+   - **Response Body**:
+     ```json
+     {
+      "id": "43962779-1043-42bd-9587-a8770bfb46a0",
+      "title": "Ad Title", 
+      "description": "Optional description", 
+      "url": "http://example.com"
+     }
+     ```
 
 2. **Retrieve an ad by its ID**
 
    - **Method**: `GET`
-   - **Endpoint**: `http://localhost:8080/api/ads/{id}`
+   - **Endpoint**: `http://localhost:8080/ads/{id}`
    - **Parameter**: `id` (required)
    - **Description**: Fetches the ad details based on the provided ID.
-
+   - **Request**: `http://localhost:8080/ads/43962779-1043-42bd-9587-a8770bfb46a0`
+   - **Response**:
+     ```json
+     {
+      "id": "43962779-1043-42bd-9587-a8770bfb46a0",
+      "title": "Ad Title", 
+      "description": "Optional description", 
+      "url": "http://example.com"
+     }
+     ```
 3. **Serve an ad and track its impression**
 
    - **Method**: `GET`
-   - **Endpoint**: `http://localhost:8080/api/ads/{id}/serve`
+   - **Endpoint**: `http://localhost:8080/ads/{id}/serve`
    - **Parameter**: `id` (required)
    - **Description**: Returns the ad's URL and tracks the impression for the given ad ID.
+   - **Request**: `http://localhost:8080/ads/43962779-1043-42bd-9587-a8770bfb46a0/serve`
+   - **Response**:
+     ```json
+     {
+      "url": "http://example.com"
+     }
+     ```
 
 ### Impression-Tracking Microservice
 

@@ -1,6 +1,6 @@
 # Arago Ad System
 
-This project is a microservice-based ad-serving and impression-tracking system. It consists of two microservices: an ad-serving service and an impression-tracking service, both integrated with a Redis database. The microservices communicate with each other using **gRPC**
+This project is a microservice-based ad-serving and impression-tracking system. It consists of two microservices: an ad-serving service and an impression-tracking service, both integrated with a Redis database.
 
 - **Ad-Serving Microservice**: Manages ad-related functionalities, including creating, retrieving, and serving ads.
 - **Impression-Tracking Microservice**: Tracks ad impressions to ensure accurate monitoring.
@@ -10,7 +10,7 @@ This project is a microservice-based ad-serving and impression-tracking system. 
 - **Ad-Serving Microservice**: [Link to Ad-Serving Repository](https://github.com/laura-hbl/ad-serving-microservice.git)
 - **Impression-Tracking Microservice**: [Link to Impression-Tracking Repository](https://github.com/laura-hbl/impression-tracking-microservice.git)
 
-Both code are on master branch.
+Both code are on **master** branch.
 
 ## Prerequisites
 
@@ -18,17 +18,16 @@ Before running the project, ensure you have the following installed:
 
 - **Java 21 JDK**
 - **Maven 4.0.0**
-- **Spring Boot 3.4.0**
-- **gRPC 3.1.0.RELEASE** 
 - **Redis Server**
 
 ## Database - Redis
 
-Both microservices use Redis for data storage and retrieval. 
+Both microservices use Redis for data storage and retrieval.
 
 ## Communication - gRPC
 
-The microservices communicate using **gRPC** .The protocol buffers (`.proto` files) are defined in are defined in  src/main/proto.
+The microservices communicate using gRPC for internal service-to-service communication, while external requests are managed through REST.
+The protocol buffers (defined in .proto files) are located in the src/main/proto directory.
 
 ## Technical Specifications
 
@@ -52,6 +51,11 @@ To run the microservices on your local machine, follow these steps for each repo
    cd ad-serving-microservice
    ```
 2. **Start the Redis Server**: Ensure that the Redis server is up and running.
+   Navigate to the redis directory
+   ```bash
+   cd bin
+   ./redis-server
+   ```
 3. **Build the project**: Navigate to the Ad-Serving project's root directory and run:
    ```bash
    mvn clean install
@@ -70,6 +74,11 @@ To run the microservices on your local machine, follow these steps for each repo
    cd impression-tracking-microservice
    ```
 2. **Start the Redis Server**: Ensure that the Redis server is up and running.
+   Navigate to the redis directory
+   ```bash
+   cd bin
+   ./redis-server
+   ```
 3. **Build the project**: Navigate to the Impression-Tracking project's root directory and run:
    ```bash
    mvn clean install
@@ -88,7 +97,7 @@ To run the microservices on your local machine, follow these steps for each repo
 
    - **Method**: `POST`
    - **Endpoint**: `http://localhost:8080/api/ads`
-   - **Request Body**: 
+   - **Request Body**:
      ```json
      {
        "title": "Ad Title", 
@@ -121,10 +130,23 @@ To run the microservices on your local machine, follow these steps for each repo
    - **Parameter**: `adId` (required)
    - **Description**: Increases the impression count for the specified ad using gRPC communication.
 
+## Bonus Points
+
+### Expiration Time
+
+The expiration time for ads has been established, with ads automatically removed from the database after **5 minutes** for testing purposes.
+
+### Rate limiting
+
+A rate-limiting mechanism has been implemented on the ad creation endpoint, restricting users to a maximum of **5 requests per minute** to prevent abuse. If the limit is exceeded, the system will return a 'Rate limit exceeded. Try again later.' message.
+
+### Validation
+
+Basic input validation has been added for creating ads (ensure title and URL are present and not empty).
 
 ## Running Tests
 
-The project includes tests for both services. To run the tests, execute:
+The project includes some unit tests for both services. To run the tests, execute:
 
 ```bash
 mvn test
